@@ -2,6 +2,12 @@
 name = "quick-type-schema"
 version = "0.1.0"
 edition = "2021"
+description = "Generate json schema and language bindings"
+repository = "https://github.com/davnotdev/quick-type-schema"
+homepage = "https://github.com/davnotdev/quick-type-schema"
+license = "BSD-2-Clause"
+readme = "./README.md"
+keywords = ["quicktype", "code-gen", "jsonschema", "json"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [features]

@@ -22,11 +22,12 @@ to be derived for your types.
 
 Add to `Cargo.toml`
 
-```
+```toml
+[dependencies]
 quick-type-schema = "0.1"
 ```
 
-```
+```rust
 use quick_type_schema::{CodegenContext, Language};
 
 // quicktype cli override arguments can be explicitly added here.

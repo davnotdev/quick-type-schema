@@ -11,10 +11,11 @@ pub enum Language {
 
 pub struct CodegenContext {
     schema: Schema,
+    override_quicktype_args: Option<Vec<String>>,
 }
 
 impl CodegenContext {
-    pub fn new() -> Self {
+    pub fn new(override_quicktype_args: Option<&[&str]>) -> Self {
         let schema = Schema {
             current_num: 0,
             final_val: object! {
@@ -25,7 +26,15 @@ impl CodegenContext {
             },
             raw_schemas: vec![],
         };
-        CodegenContext { schema }
+        CodegenContext {
+            schema,
+            override_quicktype_args: override_quicktype_args.map(|override_quicktype_args| {
+                override_quicktype_args
+                    .iter()
+                    .map(|s| s.to_string())
+                    .collect()
+            }),
+        }
     }
 
     #[cfg(feature = "add_type")]
@@ -59,7 +68,12 @@ impl CodegenContext {
             "schema",
             &schema_path.to_str().unwrap(),
         ];
-        quicktype_args.append(&mut args.to_vec());
+        if let Some(overrides) = self.override_quicktype_args.as_ref() {
+            let mut overrides = overrides.iter().map(|s| s.as_str()).collect();
+            quicktype_args.append(&mut overrides);
+        } else {
+            quicktype_args.append(&mut args.to_vec());
+        }
 
         let cmd = if std::process::Command::new("quicktype")
             .arg("--version")
@@ -92,7 +106,7 @@ impl CodegenContext {
 
 impl Default for CodegenContext {
     fn default() -> Self {
-        Self::new()
+        Self::new(None)
     }
 }
 

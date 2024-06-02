@@ -13,6 +13,7 @@ Created for [`bubbel-backend`](https://github.com/joinbubbel/bubbel-backend), th
 ## Prerequisites
 
 Since this library is a wrapper over quicktype, you will need either `npx` or `quicktype` installed.
+The latter will startup faster.
 
 ## Usage
 
@@ -23,13 +24,19 @@ quick-type-schema = "0.1"
 ```
 
 ```
-let mut codegen = CodegenContext::new();
+use quick_type_schema::{CodegenContext, Language};
+
+// quicktype cli override arguments can be explicitly added here.
+// Ex: `Some(&["-l", "typescript", "--just-types"])`
+let mut codegen = CodegenContext::new(None);
 
 // Add a type that has derived `JsonSchema`
 codegen.add_type::<MyStruct>();
 
 // Add your own json schema
 codegen.add_schema("{ ... }");
+
+codegen.finish(Language::Typescript);
 ```
 
 You can add these to your build process, but because of the slow startup of quicktype and lack of caching, this is highly discouraged.

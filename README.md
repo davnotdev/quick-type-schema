@@ -31,6 +31,7 @@ quick-type-schema = "0.1"
 use quick_type_schema::{CodegenContext, Language};
 
 // quicktype cli override arguments can be explicitly added here.
+// These overrides even affect `Language` passed in `codegen.finish`
 // Ex: `Some(&["-l", "typescript", "--just-types"])`
 let mut codegen = CodegenContext::new(None);
 

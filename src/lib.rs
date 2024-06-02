@@ -53,7 +53,6 @@ impl CodegenContext {
         std::fs::write(&schema_path, self.schema.final_val.to_string()).unwrap();
 
         let mut quicktype_args = vec![
-            "quicktype",
             "-o",
             &out_path.to_str().unwrap(),
             "--src-lang",
@@ -62,10 +61,28 @@ impl CodegenContext {
         ];
         quicktype_args.append(&mut args.to_vec());
 
-        std::process::Command::new("npx")
-            .args(args.iter())
+        let cmd = if std::process::Command::new("quicktype")
+            .arg("--version")
+            .output()
+            .is_ok()
+        {
+            "quicktype"
+        } else if std::process::Command::new("npx")
+            .arg("--version")
+            .output()
+            .is_ok()
+        {
+            quicktype_args.insert(0, "quicktype");
+            "npx"
+        } else {
+            panic!("Neither `quicktype` and `npx` are in $PATH")
+        };
+
+        std::process::Command::new(cmd)
+            .args(quicktype_args.iter())
             .output()
             .unwrap();
+
         let output = std::fs::read_to_string(&out_path).unwrap();
         let _ = std::fs::remove_file(out_path);
         let _ = std::fs::remove_file(schema_path);

@@ -5,9 +5,7 @@ use schemars::{schema_for, JsonSchema};
 
 mod langs;
 
-pub enum Language {
-    Typescript,
-}
+pub use langs::*;
 
 pub struct CodegenContext {
     schema: Schema,
@@ -48,9 +46,7 @@ impl CodegenContext {
     }
 
     pub fn finish(&self, lang: Language) -> String {
-        let args = match lang {
-            Language::Typescript => langs::TYPESCRIPT_ARGS,
-        };
+        let args = lang.get_args();
         let proc_id = std::process::id();
 
         let mut out_path = std::env::temp_dir();

@@ -41,3 +41,40 @@ codegen.finish(Language::Typescript);
 
 You can add these to your build process, but because of the slow startup of quicktype and lack of caching, this is highly discouraged.
 
+## Language Support
+
+Generally, `quick-type-schema` supports pretty much every language quicktype supports.
+However, some have been left out due to incompatibilities or complexity (notable ones being C and C++).
+For those languages, please use the override arguments and refer to the quicktype cli - `quicktype --help`.
+Here are the supported languages:
+
+```
+Typescript
+JsonSchema
+CSharp
+    +via Newton Soft
+    +via System.Text.Json
+Crystal
+Dart
+Elm
+Go
+Haskell
+Java
+Kotlin
+    +via Jackson
+    +via Klaxon
+    +via Kotlinx
+ObjectiveC
+Python
+    +via v3.5
+    +via v3.6
+    +via v3.7
+Ruby
+Rust
+Scala3
+    +via Circe
+    +via Upickle
+Smithy
+Swift
+```
+

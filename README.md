@@ -15,6 +15,9 @@ Created for [`bubbel-backend`](https://github.com/joinbubbel/bubbel-backend), th
 Since this library is a wrapper over quicktype, you will need either `npx` or `quicktype` installed.
 The latter will startup faster.
 
+Additionally, you will need the `JsonSchema` trait from [`schema-rs`](https://github.com/GREsau/schemars)
+to be derived for your types.
+
 ## Usage
 
 Add to `Cargo.toml`
@@ -44,7 +47,7 @@ You can add these to your build process, but because of the slow startup of quic
 ## Language Support
 
 Generally, `quick-type-schema` supports pretty much every language quicktype supports.
-However, some have been left out due to incompatibilities or complexity (notable ones being C and C++).
+However, some have been left out due to incompatibilities or complexity (notable ones being C, C++, Java, Kotlin, Objective-C, and Scala3).
 For those languages, please use the override arguments and refer to the quicktype cli - `quicktype --help`.
 Here are the supported languages:
 
@@ -59,21 +62,12 @@ Dart
 Elm
 Go
 Haskell
-Java
-Kotlin
-    +via Jackson
-    +via Klaxon
-    +via Kotlinx
-ObjectiveC
 Python
     +via v3.5
     +via v3.6
     +via v3.7
 Ruby
 Rust
-Scala3
-    +via Circe
-    +via Upickle
 Smithy
 Swift
 ```

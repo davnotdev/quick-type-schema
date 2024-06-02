@@ -22,15 +22,6 @@ pub enum Language {
         module: Option<String>,
         array_or_list: ArrayOrList,
     },
-    Java {
-        array_or_list: ArrayOrList,
-        package: String,
-    },
-    Kotlin {
-        package: String,
-        framework: Option<KotlinFramework>,
-    },
-    ObjectiveC,
     Python {
         version: PythonVersion,
     },
@@ -40,10 +31,6 @@ pub enum Language {
     Rust {
         derive_debug: bool,
         derive_clone: bool,
-    },
-    Scala3 {
-        package: String,
-        framework: Option<Scala3Framework>,
     },
     Smithy {
         package: String,
@@ -88,13 +75,6 @@ pub enum CSharpAnyType {
 }
 
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
-pub enum KotlinFramework {
-    Jackson,
-    Klaxon,
-    Kotlinx,
-}
-
-#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum PythonVersion {
     V3_5,
     V3_6,
@@ -106,12 +86,6 @@ pub enum RubyStrictness {
     Strict,
     Coercible,
     None,
-}
-
-#[derive(Debug, Clone, Hash, PartialEq, Eq)]
-pub enum Scala3Framework {
-    Circe,
-    Upickle,
 }
 
 impl Language {
@@ -204,32 +178,6 @@ impl Language {
                 }
                 out
             }
-            Language::Java {
-                array_or_list,
-                package,
-            } => {
-                let mut out = vec!["-l", "java", "--package", package];
-                out.push("--array-type");
-                match array_or_list {
-                    ArrayOrList::Array => out.push("array"),
-                    ArrayOrList::List => out.push("list"),
-                }
-                out
-            }
-            Language::Kotlin { package, framework } => {
-                let mut out = vec!["-l", "kotlin", "--package", package];
-                if let Some(framework) = framework {
-                    match framework {
-                        KotlinFramework::Jackson => out.push("jackson"),
-                        KotlinFramework::Klaxon => out.push("klaxon"),
-                        KotlinFramework::Kotlinx => out.push("kotlinx"),
-                    }
-                } else {
-                    out.push("--just-types")
-                }
-                out
-            }
-            Language::ObjectiveC => vec!["-l", "objc", "--just-types"],
             Language::Python { version } => {
                 let mut out = vec!["-l", "py"];
                 out.push("--python-version");
@@ -260,19 +208,6 @@ impl Language {
                 }
                 if *derive_clone {
                     out.push("--derive-clone");
-                }
-                out
-            }
-            Language::Scala3 { package, framework } => {
-                let mut out = vec!["-l", "scala3", "--package", package];
-                if let Some(framework) = framework {
-                    out.push("--framework");
-                    match framework {
-                        Scala3Framework::Circe => out.push("circe"),
-                        Scala3Framework::Upickle => out.push("upickle"),
-                    }
-                } else {
-                    out.push("--just-types");
                 }
                 out
             }
@@ -309,6 +244,24 @@ impl Language {
 
                 out
             }
+        }
+    }
+
+    pub fn name(&self) -> &str {
+        match self {
+            Language::Typescript => "typescript",
+            Language::JsonSchema => "schema",
+            Language::CSharp { .. } => "csharp",
+            Language::Crystal => "crystal",
+            Language::Dart => "dart",
+            Language::Elm { .. } => "elm",
+            Language::Go { .. } => "go",
+            Language::Haskell { .. } => "haskell",
+            Language::Python { .. } => "python",
+            Language::Ruby { .. } => "ruby",
+            Language::Rust { .. } => "rust",
+            Language::Smithy { .. } => "smithy",
+            Language::Swift { .. } => "swift",
         }
     }
 }

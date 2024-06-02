@@ -51,7 +51,7 @@ impl CodegenContext {
         let proc_id = std::process::id();
 
         let mut out_path = std::env::temp_dir();
-        out_path.push(format!("quick-type-code-{}", proc_id));
+        out_path.push(format!("quick-type-code-{}-{}", lang.name(), proc_id));
 
         let mut schema_path = std::env::temp_dir();
         schema_path.push(format!("quick-type-schema-{}.json", proc_id));
@@ -71,6 +71,12 @@ impl CodegenContext {
         } else {
             quicktype_args.append(&mut args.to_vec());
         }
+        eprintln!(
+            "{:?} {} {}",
+            quicktype_args,
+            out_path.to_str().unwrap(),
+            schema_path.to_str().unwrap()
+        );
 
         let cmd = if std::process::Command::new("quicktype")
             .arg("--version")

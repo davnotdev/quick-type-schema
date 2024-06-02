@@ -1,3 +1,4 @@
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum Language {
     Typescript,
     JsonSchema,
@@ -56,49 +57,58 @@ pub enum Language {
     },
 }
 
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum ArrayOrList {
     Array,
     List,
 }
 
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum StructOrClass {
     Struct,
     Class,
 }
 
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum CSharpFramework {
     NewtonSoft,
     SystemTextJson,
 }
 
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum CSharpNumberType {
     Double,
     Decimal,
 }
 
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum CSharpAnyType {
     Object,
     Dynamic,
 }
 
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum KotlinFramework {
     Jackson,
     Klaxon,
     Kotlinx,
 }
 
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum PythonVersion {
     V3_5,
     V3_6,
     V3_7,
 }
 
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum RubyStrictness {
     Strict,
     Coercible,
     None,
 }
 
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub enum Scala3Framework {
     Circe,
     Upickle,

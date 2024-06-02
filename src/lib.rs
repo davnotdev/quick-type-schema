@@ -7,6 +7,7 @@ mod langs;
 
 pub use langs::*;
 
+#[derive(Debug, Clone)]
 pub struct CodegenContext {
     schema: Schema,
     override_quicktype_args: Option<Vec<String>>,
@@ -106,13 +107,7 @@ impl Default for CodegenContext {
     }
 }
 
-pub struct Endpoint {
-    pub fn_name: &'static str,
-    pub endpoint: &'static str,
-    pub in_ty: &'static str,
-    pub out_ty: &'static str,
-}
-
+#[derive(Debug, Clone)]
 pub struct Schema {
     current_num: usize,
     final_val: JsonValue,

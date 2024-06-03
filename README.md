@@ -48,7 +48,7 @@ You can add these to your build process, but because of the slow startup of quic
 
 ## Language Support
 
-Generally, `quick-type-schema` supports pretty much every language quicktype supports.
+`quick-type-schema` supports pretty much every language quicktype supports.
 However, some have been left out due to incompatibilities or complexity (notable ones being C, C++, Java, Kotlin, Objective-C, and Scala3).
 For those languages, please use the override arguments and refer to the quicktype cli - `quicktype --help`.
 Here are the supported languages:

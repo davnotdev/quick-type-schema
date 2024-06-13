@@ -59,6 +59,7 @@ impl CodegenContext {
         std::fs::write(&schema_path, self.schema.final_val.to_string()).unwrap();
 
         let mut quicktype_args = vec![
+            "--quiet",
             "-o",
             &out_path.to_str().unwrap(),
             "--src-lang",
@@ -71,12 +72,6 @@ impl CodegenContext {
         } else {
             quicktype_args.append(&mut args.to_vec());
         }
-        eprintln!(
-            "{:?} {} {}",
-            quicktype_args,
-            out_path.to_str().unwrap(),
-            schema_path.to_str().unwrap()
-        );
 
         let cmd = if std::process::Command::new("quicktype")
             .arg("--version")
@@ -95,10 +90,22 @@ impl CodegenContext {
             panic!("Neither `quicktype` and `npx` are in $PATH")
         };
 
-        std::process::Command::new(cmd)
-            .args(quicktype_args.iter())
-            .output()
-            .unwrap();
+        let out = String::from_utf8(
+            std::process::Command::new(cmd)
+                .args(quicktype_args.iter())
+                .output()
+                .unwrap()
+                .stderr,
+        )
+        .unwrap();
+
+        if !out.is_empty() {
+            panic!("quicktype {}", out);
+        }
+
+        if !out_path.exists() {
+            panic!("Error: quicktype generated an unexpected noutput");
+        }
 
         let output = std::fs::read_to_string(&out_path).unwrap();
         let _ = std::fs::remove_file(out_path);

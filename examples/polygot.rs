@@ -7,6 +7,7 @@ pub struct MyStruct {
     _b: Option<String>,
     _c: i32,
     _d: OtherStruct,
+    _e: (),
 }
 
 #[derive(JsonSchema)]
@@ -37,7 +38,7 @@ fn main() {
             any_type: CSharpAnyType::Object,
         },
         Language::Crystal,
-        Language::Dart,
+        Language::Dart { use_freezed: false },
         Language::Elm {
             module: Some("polygot".to_owned()),
             array_or_list: ArrayOrList::Array,

@@ -9,6 +9,8 @@
 Created for [`bubbel-backend`](https://github.com/joinbubbel/bubbel-backend), this library has been repurposed for the general use case!
 
 > To be 100% clear, this library is a wrapper over [quicktype.io](quicktype.io).
+> Additionally, not all cases and options are tested / available.
+> Please report all issues you come across.
 
 ## Prerequisites
 
@@ -73,4 +75,3 @@ Rust
 Smithy
 Swift
 ```
-

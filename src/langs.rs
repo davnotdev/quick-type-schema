@@ -10,7 +10,9 @@ pub enum Language {
         any_type: CSharpAnyType,
     },
     Crystal,
-    Dart,
+    Dart {
+        use_freezed: bool,
+    },
     Elm {
         module: Option<String>,
         array_or_list: ArrayOrList,
@@ -129,7 +131,16 @@ impl Language {
                 out
             }
             Language::Crystal => vec!["-l", "cr"],
-            Language::Dart => vec!["-l", "dart", "--just-types"],
+            Language::Dart { use_freezed } => vec![
+                "-l",
+                "dart",
+                "--just-types",
+                if *use_freezed {
+                    "--use-freezed"
+                } else {
+                    "--no-use-freezed"
+                },
+            ],
             Language::Elm {
                 module,
                 array_or_list,
@@ -253,7 +264,7 @@ impl Language {
             Language::JsonSchema => "schema",
             Language::CSharp { .. } => "csharp",
             Language::Crystal => "crystal",
-            Language::Dart => "dart",
+            Language::Dart { .. } => "dart",
             Language::Elm { .. } => "elm",
             Language::Go { .. } => "go",
             Language::Haskell { .. } => "haskell",

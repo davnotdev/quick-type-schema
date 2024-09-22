@@ -26,7 +26,7 @@ Add to `Cargo.toml`
 
 ```toml
 [dependencies]
-quick-type-schema = "0.1"
+quick-type-schema = "0.2"
 ```
 
 ```rust

@@ -1,7 +1,7 @@
 # `quick-type-schema`
 
 [![Version Badge](https://img.shields.io/crates/v/quick-type-schema)](https://crates.io/crates/quick-type-schema)
-[![Docs Badge](https://img.shields.io/docsrs/quick-type-schema/latest)](https://docs.rs/quick-type-schema/latest/quick-type-schema/)
+[![Docs Badge](https://img.shields.io/docsrs/quick-type-schema/latest)](https://docs.rs/quick-type-schema/latest/)
 [![License Badge](https://img.shields.io/crates/l/quick-type-schema)](LICENSE)
 [![Downloads Badge](https://img.shields.io/crates/d/quick-type-schema)](https://crates.io/crates/quick-type-schema)
 

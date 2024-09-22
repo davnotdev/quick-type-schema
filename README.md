@@ -35,7 +35,7 @@ use quick_type_schema::{CodegenContext, Language};
 // quicktype cli override arguments can be explicitly added here.
 // These overrides even affect `Language` passed in `codegen.finish`
 // Ex: `Some(&["-l", "typescript", "--just-types"])`
-let mut codegen = CodegenContext::new(None);
+let mut codegen = CodegenContext::new("TopLevelName", None);
 
 // Add a type that has derived `JsonSchema`
 codegen.add_type::<MyStruct>();
@@ -43,7 +43,8 @@ codegen.add_type::<MyStruct>();
 // Add your own json schema
 codegen.add_schema("{ ... }");
 
-codegen.finish(Language::Typescript);
+// See the docs or `quicktype --help` for all typescript options
+codegen.finish(Language::Typescript(TypescriptOptions { ..Default::default() }));
 ```
 
 You can add these to your build process, but because of the slow startup of quicktype and lack of caching, this is highly discouraged.
@@ -59,17 +60,12 @@ Here are the supported languages:
 Typescript
 JsonSchema
 CSharp
-    +via Newton Soft
-    +via System.Text.Json
 Crystal
 Dart
 Elm
 Go
 Haskell
 Python
-    +via v3.5
-    +via v3.6
-    +via v3.7
 Ruby
 Rust
 Smithy

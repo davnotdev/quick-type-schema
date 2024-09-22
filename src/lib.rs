@@ -3,29 +3,34 @@ use json::{object, JsonValue};
 #[cfg(feature = "add_type")]
 use schemars::{schema_for, JsonSchema};
 
+mod cli_builder;
 mod langs;
 
+use cli_builder::CliBuilder;
 pub use langs::*;
 
 #[derive(Debug, Clone)]
 pub struct CodegenContext {
+    base_name: String,
     schema: Schema,
     override_quicktype_args: Option<Vec<String>>,
 }
 
 impl CodegenContext {
-    pub fn new(override_quicktype_args: Option<&[&str]>) -> Self {
+    pub fn new(base_name: &str, override_quicktype_args: Option<&[&str]>) -> Self {
         let schema = Schema {
             current_num: 0,
             final_val: object! {
                 "$schema": "http://json-schema.org/draft-07/schema#",
                 "type": "object",
-                "definitions": {},
-                "properties": {},
+                "definitions": {
+
+                },
             },
             raw_schemas: vec![],
         };
         CodegenContext {
+            base_name: base_name.to_owned(),
             schema,
             override_quicktype_args: override_quicktype_args.map(|override_quicktype_args| {
                 override_quicktype_args
@@ -58,17 +63,21 @@ impl CodegenContext {
 
         std::fs::write(&schema_path, self.schema.final_val.to_string()).unwrap();
 
-        let mut quicktype_args = vec![
+        let mut quicktype_args = [
             "--quiet",
+            "-t",
+            &self.base_name,
             "-o",
-            &out_path.to_str().unwrap(),
+            out_path.to_str().unwrap(),
             "--src-lang",
             "schema",
-            &schema_path.to_str().unwrap(),
-        ];
+            schema_path.to_str().unwrap(),
+        ]
+        .into_iter()
+        .map(|s| s.to_owned())
+        .collect::<Vec<_>>();
         if let Some(overrides) = self.override_quicktype_args.as_ref() {
-            let mut overrides = overrides.iter().map(|s| s.as_str()).collect();
-            quicktype_args.append(&mut overrides);
+            quicktype_args.append(&mut overrides.clone());
         } else {
             quicktype_args.append(&mut args.to_vec());
         }
@@ -84,7 +93,7 @@ impl CodegenContext {
             .output()
             .is_ok()
         {
-            quicktype_args.insert(0, "quicktype");
+            quicktype_args.insert(0, "quicktype".to_owned());
             "npx"
         } else {
             panic!("Neither `quicktype` and `npx` are in $PATH")
@@ -111,12 +120,6 @@ impl CodegenContext {
         let _ = std::fs::remove_file(out_path);
         let _ = std::fs::remove_file(schema_path);
         output
-    }
-}
-
-impl Default for CodegenContext {
-    fn default() -> Self {
-        Self::new(None)
     }
 }
 
